@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from db.base import databese
 import uvicorn
 
 app = FastAPI()
@@ -9,7 +10,11 @@ async def root():
 
 @app.on_event('startup')
 async def startup():
-    await
+    await databese.connect()
+
+@app.on_event('shutwodw')
+async def shutdown():
+    await databese.disconnect()
 
 if __name__ == '__main__':
     uvicorn.run('main:app', port=8000, host='0.0.0.0', reload=True)
